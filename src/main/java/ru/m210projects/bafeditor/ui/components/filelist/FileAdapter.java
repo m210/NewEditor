@@ -1,5 +1,6 @@
 package ru.m210projects.bafeditor.ui.components.filelist;
 
+import org.jetbrains.annotations.NotNull;
 import ru.m210projects.bafeditor.backend.filehandler.Entry;
 import ru.m210projects.bafeditor.backend.filehandler.Group;
 import ru.m210projects.bafeditor.ui.models.EntryModel;
@@ -17,25 +18,20 @@ public class FileAdapter extends DefaultListModel<EntryModel> implements ListSel
     private Group<Entry> group;
     private onEntryClickListener entryClickListener;
 
-    public void update(Group<Entry> group) {
+    public void update(@NotNull Group<Entry> group) {
         this.group = group;
 
         removeAllElements();
         List<Entry> files = group.getEntries();
         files.sort(Comparator.comparing(Entry::getName));
-        int i = 0;
-        for (Entry entry : files) {
-            if (entry.getExtension().equals("art")) {
+
+        if (!files.isEmpty()) {
+            for (Entry entry : files) {
                 addElement(new EntryModel(entry, entry.getName()));
-                i++;
             }
+        } else {
+            addElement(new EntryModel(DUMMY_ENTRY, ""));
         }
-
-        if (i != 0) {
-            return;
-        }
-
-        addElement(new EntryModel(DUMMY_ENTRY, ""));
     }
 
     public void setEntryClickListener(onEntryClickListener entryClickListener) {

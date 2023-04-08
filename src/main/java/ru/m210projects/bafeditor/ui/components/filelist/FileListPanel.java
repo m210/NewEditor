@@ -2,6 +2,7 @@ package ru.m210projects.bafeditor.ui.components.filelist;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import org.jetbrains.annotations.NotNull;
 import ru.m210projects.bafeditor.backend.filehandler.Entry;
 import ru.m210projects.bafeditor.backend.filehandler.Group;
 import ru.m210projects.bafeditor.ui.models.EntryModel;
@@ -29,7 +30,7 @@ public class FileListPanel extends JPanel {
         fileAdapter.setEntryClickListener(entryClickListener);
     }
 
-    public void updateFileList(Group<Entry> group) {
+    public void updateFileList(@NotNull Group<Entry> group) {
         fileAdapter.update(group);
     }
 

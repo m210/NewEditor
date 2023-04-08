@@ -3,10 +3,8 @@ package ru.m210projects.bafeditor;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import ru.m210projects.bafeditor.backend.filehandler.Directory;
-import ru.m210projects.bafeditor.backend.filehandler.Entry;
-import ru.m210projects.bafeditor.backend.filehandler.ResourceEntry;
-import ru.m210projects.bafeditor.backend.palette.Palette;
+import ru.m210projects.bafeditor.backend.filehandler.*;
+import ru.m210projects.bafeditor.backend.tiles.ArtFile;
 import ru.m210projects.bafeditor.ui.components.RadiusButton;
 import ru.m210projects.bafeditor.ui.components.ShadowUtils;
 import ru.m210projects.bafeditor.ui.components.filelist.FileListPanel;
@@ -14,11 +12,13 @@ import ru.m210projects.bafeditor.ui.components.filelist.onEntryClickListener;
 import ru.m210projects.bafeditor.ui.components.iconbar.IconBarPanel;
 import ru.m210projects.bafeditor.ui.components.tileproperties.TilePropertiesTree;
 import ru.m210projects.bafeditor.ui.components.TileViewer;
+import ru.m210projects.bafeditor.ui.models.EntryModel;
 import ru.m210projects.bafeditor.ui.models.TileContainer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Paths;
 
 import static com.intellij.uiDesigner.core.GridConstraints.*;
@@ -74,12 +74,21 @@ public class MainForm extends JFrame {
 
     private void initFileList() {
         FileListPanel files = new FileListPanel();
-        ResourceEntry entry = new ResourceEntry("blood.act");
 
+        Entry palette = new ResourceEntry("blood.act");
         try {
             Directory dir = new Directory(Paths.get("D:\\Temp\\Blood\\"));
 
-            files.updateFileList(dir);
+            EntryGroup gr = new EntryGroup("User");
+            for (Entry entry : dir.getEntries()) {
+                if (entry.getExtension().equals("art")) {
+                    gr.add(entry);
+                }
+            }
+            gr.add(palette);
+            gr.add(new URLEntry(new URL("http://m210.ucoz.ru/Files/Logs/BloodGDX/apr012023205815.log")));
+
+            files.updateFileList(gr);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -89,7 +98,9 @@ public class MainForm extends JFrame {
         files.setEntryClickListener(new onEntryClickListener() {
             @Override
             public void onEntryClicked(Entry item) {
-                System.out.println(item);
+                ArtFile artFile = new ArtFile(item.getName(), item::getInputStream);
+
+                System.out.println(item + " " + artFile.getSize());
             }
         });
     }
