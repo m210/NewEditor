@@ -1,21 +1,19 @@
-package ru.m210projects.bafeditor.components.tileproperties;
+package ru.m210projects.bafeditor.ui.components.tileproperties;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import ru.m210projects.bafeditor.components.RadiusButton;
+import ru.m210projects.bafeditor.ui.components.RadiusButton;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import static com.intellij.uiDesigner.core.GridConstraints.*;
 import static com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED;
-import static ru.m210projects.bafeditor.components.tileproperties.TilePropertiesTree.BOTTOM_PADDING;
-import static ru.m210projects.bafeditor.components.tileproperties.TilePropertiesTree.TOP_PADDING;
 
 public class PropertiesPanel extends JPanel {
 
     public PropertiesPanel() {
-        setBorder(new EmptyBorder(TOP_PADDING, 0, BOTTOM_PADDING, 0));
+        setBorder(new EmptyBorder(TilePropertiesTree.TOP_PADDING, 0, TilePropertiesTree.BOTTOM_PADDING, 0));
         setLayout(new GridLayoutManager(4, 2));
 
         add(new JLabel("Tile width:"), new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));

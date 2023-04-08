@@ -1,4 +1,4 @@
-package ru.m210projects.bafeditor.components;
+package ru.m210projects.bafeditor.ui.components;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

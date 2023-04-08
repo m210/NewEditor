@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.nio.file.*;
 import java.util.*;
 
-public class Directory implements Group<FileEntry> {
+public class Directory implements Group<Entry> {
     public static final FileEntry DUMMY_ENTRY = new FileEntry(Paths.get("DUMMY"), "dummy", -1) {
         @Override
         public InputStream getInputStream() {
@@ -28,7 +28,7 @@ public class Directory implements Group<FileEntry> {
     };
     public static final Directory DUMMY_DIRECTORY = new Directory() {
         @Override
-        public List<FileEntry> getEntries() {
+        public List<Entry> getEntries() {
             return new ArrayList<>();
         }
 
@@ -79,7 +79,7 @@ public class Directory implements Group<FileEntry> {
     }
 
     @Override
-    public synchronized List<FileEntry> getEntries() {
+    public synchronized List<Entry> getEntries() {
         return new ArrayList<>(entries.values());
     }
 

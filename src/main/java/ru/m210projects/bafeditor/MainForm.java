@@ -4,18 +4,20 @@ package ru.m210projects.bafeditor;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import ru.m210projects.bafeditor.backend.filehandler.Directory;
-import ru.m210projects.bafeditor.components.RadiusButton;
-import ru.m210projects.bafeditor.components.ShadowUtils;
-import ru.m210projects.bafeditor.components.filelist.FileListPanel;
-import ru.m210projects.bafeditor.components.iconbar.IconBarPanel;
-import ru.m210projects.bafeditor.components.tileproperties.TilePropertiesTree;
-import ru.m210projects.bafeditor.components.TileViewer;
-import ru.m210projects.bafeditor.models.TileContainer;
+import ru.m210projects.bafeditor.backend.filehandler.Entry;
+import ru.m210projects.bafeditor.backend.filehandler.ResourceEntry;
+import ru.m210projects.bafeditor.backend.palette.Palette;
+import ru.m210projects.bafeditor.ui.components.RadiusButton;
+import ru.m210projects.bafeditor.ui.components.ShadowUtils;
+import ru.m210projects.bafeditor.ui.components.filelist.FileListPanel;
+import ru.m210projects.bafeditor.ui.components.filelist.onEntryClickListener;
+import ru.m210projects.bafeditor.ui.components.iconbar.IconBarPanel;
+import ru.m210projects.bafeditor.ui.components.tileproperties.TilePropertiesTree;
+import ru.m210projects.bafeditor.ui.components.TileViewer;
+import ru.m210projects.bafeditor.ui.models.TileContainer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -72,15 +74,24 @@ public class MainForm extends JFrame {
 
     private void initFileList() {
         FileListPanel files = new FileListPanel();
+        ResourceEntry entry = new ResourceEntry("blood.act");
 
         try {
             Directory dir = new Directory(Paths.get("D:\\Temp\\Blood\\"));
+
             files.updateFileList(dir);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         fileList.add(files, new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_BOTH, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
+
+        files.setEntryClickListener(new onEntryClickListener() {
+            @Override
+            public void onEntryClicked(Entry item) {
+                System.out.println(item);
+            }
+        });
     }
 
     private void initTileViewer() {

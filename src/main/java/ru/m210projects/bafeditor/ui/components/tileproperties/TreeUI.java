@@ -1,6 +1,6 @@
-package ru.m210projects.bafeditor.components.tileproperties;
+package ru.m210projects.bafeditor.ui.components.tileproperties;
 
-import ru.m210projects.bafeditor.models.ObjectTreeNode;
+import ru.m210projects.bafeditor.ui.models.ObjectTreeNode;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTreeUI;

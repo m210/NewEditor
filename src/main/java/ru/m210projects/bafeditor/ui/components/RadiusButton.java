@@ -1,4 +1,4 @@
-package ru.m210projects.bafeditor.components;
+package ru.m210projects.bafeditor.ui.components;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

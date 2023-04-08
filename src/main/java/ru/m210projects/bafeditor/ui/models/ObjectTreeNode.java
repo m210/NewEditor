@@ -1,4 +1,4 @@
-package ru.m210projects.bafeditor.models;
+package ru.m210projects.bafeditor.ui.models;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 

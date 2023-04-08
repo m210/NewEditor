@@ -1,8 +1,8 @@
-package ru.m210projects.bafeditor.components.iconbar;
+package ru.m210projects.bafeditor.ui.components.iconbar;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import ru.m210projects.bafeditor.components.RadiusButton;
+import ru.m210projects.bafeditor.ui.components.RadiusButton;
 
 import javax.swing.*;
 
