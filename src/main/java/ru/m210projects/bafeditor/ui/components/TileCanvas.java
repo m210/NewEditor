@@ -2,6 +2,7 @@ package ru.m210projects.bafeditor.ui.components;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.IndexColorModel;
 
 public class TileCanvas extends JPanel {
 
@@ -11,6 +12,8 @@ public class TileCanvas extends JPanel {
     private Color borderColor = new Color(214, 214, 214);
     private int gridSize = 16;
 
+    protected IndexColorModel palette;
+
     public TileCanvas() {
         setBackground(Color.WHITE);
     }
@@ -19,6 +22,10 @@ public class TileCanvas extends JPanel {
     public void paint(Graphics g) {
         drawBackground(g);
         drawBorder(g);
+    }
+
+    public void setPalette(IndexColorModel palette) {
+        this.palette = palette;
     }
 
     private void drawBackground(Graphics g) {

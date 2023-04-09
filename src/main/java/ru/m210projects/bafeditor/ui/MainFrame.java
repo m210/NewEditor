@@ -18,10 +18,8 @@ public class MainFrame extends JFrame {
     private JPanel fileListHolder;
     private JPanel tileBrowserHolder;
     private JPanel tileViewerHolder;
-    private JPanel tilePropButtonsHolder;
     private JPanel tilePropTreeHolder;
     private JPanel tilePanelHolder;
-
 
     public MainFrame() {
         setContentPane(root);

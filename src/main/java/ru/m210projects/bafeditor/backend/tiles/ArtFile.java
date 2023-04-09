@@ -15,14 +15,19 @@ import java.util.List;
 public class ArtFile implements Group<ArtEntry> {
     static final ArtEntry DUMMY_ENTRY = new ArtEntry(() -> new ByteArrayInputStream(new byte[0]), -1, -1, 0, 0, 0);
     private static final String HEADER = "BUILDART";
-    private final int tileStart;
+    private final int firstTile;
     private final String name;
     private final List<ArtEntry> entries;
 
     public ArtFile(String name, int tileStart, int numTiles) {
         this.name = name;
-        this.tileStart = tileStart;
+        this.firstTile = tileStart;
         this.entries = new ArrayList<>(numTiles);
+        for (int i = 0; i < numTiles; i++) {
+            DataArtEntry art = new DataArtEntry(new byte[0], 0, 0);
+            art.setNum(tileStart + i);
+            entries.add(art);
+        }
     }
 
     public ArtFile(String name, InputStreamProvider provider) {
@@ -76,7 +81,7 @@ public class ArtFile implements Group<ArtEntry> {
         }
 
         this.entries = entries;
-        this.tileStart = tileStart;
+        this.firstTile = tileStart;
     }
 
     @Override
@@ -100,11 +105,15 @@ public class ArtFile implements Group<ArtEntry> {
     }
 
     public ArtEntry getEntry(int tileNum) {
-        int index = tileNum - tileStart;
+        int index = tileNum - firstTile;
         if(index < 0 || index >= entries.size()) {
             return DUMMY_ENTRY;
         }
         return entries.get(index);
+    }
+
+    public int getFirstTile() {
+        return firstTile;
     }
 
     private int checkVersion(InputStream is) throws IOException {

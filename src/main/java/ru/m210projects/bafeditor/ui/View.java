@@ -5,7 +5,6 @@ import ru.m210projects.bafeditor.ui.components.TileViewer;
 import ru.m210projects.bafeditor.ui.components.filelist.FileListPanel;
 import ru.m210projects.bafeditor.ui.components.iconbar.IconBarPanel;
 import ru.m210projects.bafeditor.ui.components.tileproperties.TilePropertiesTree;
-import ru.m210projects.bafeditor.ui.models.TileContainer;
 
 public class View {
 
@@ -32,10 +31,8 @@ public class View {
 
     private TilePropertiesTree initTilePropTree() {
         TilePropertiesTree tilePropertiesTree = new TilePropertiesTree(controller);
-
         tilePropertiesTree.setToggleClickCount(1);
         tilePropertiesTree.setOpaque(false);
-
         return tilePropertiesTree;
     }
 

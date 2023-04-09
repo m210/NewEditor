@@ -2,9 +2,7 @@ package ru.m210projects.bafeditor.ui.components.tileproperties;
 
 import ru.m210projects.bafeditor.ui.Controller;
 import ru.m210projects.bafeditor.ui.models.ObjectTreeNode;
-import ru.m210projects.bafeditor.ui.models.TileContainer;
 
-import javax.naming.ldap.Control;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.*;

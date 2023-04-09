@@ -46,6 +46,13 @@ public class StreamUtils {
         return data;
     }
 
+    public static void skip(InputStream in, int n) throws IOException {
+        long l = in.skip(4);
+        if(l != n) {
+            throw new EOFException();
+        }
+    }
+
     public static void writeInt(OutputStream out, long v) throws IOException {
         out.write((int) (v & 0xff));
         out.write((int) ((v >>> 8) & 0xff));

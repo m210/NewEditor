@@ -1,6 +1,9 @@
 package ru.m210projects.bafeditor.ui;
 
+import ru.m210projects.bafeditor.UserContext;
 import ru.m210projects.bafeditor.backend.filehandler.*;
+import ru.m210projects.bafeditor.backend.palette.Format;
+import ru.m210projects.bafeditor.backend.palette.Palette;
 import ru.m210projects.bafeditor.backend.tiles.ArtFile;
 import ru.m210projects.bafeditor.ui.components.RadiusButton;
 
@@ -12,12 +15,14 @@ import java.nio.file.Paths;
 public class Controller {
 
     private View view;
+    private final UserContext userContext = UserContext.getInstance();
 
     public void onInit(View view) {
         this.view = view;
+        onNewArt();
+        onChangePalette(new ResourceEntry("blood.act"));
 
         try {
-            Entry palette = new ResourceEntry("blood.act");
             Directory dir = new Directory(Paths.get("D:\\Temp\\Blood\\"));
 
             EntryGroup gr = new EntryGroup("User");
@@ -26,7 +31,6 @@ public class Controller {
                     gr.add(entry);
                 }
             }
-            gr.add(palette);
             gr.add(new URLEntry(new URL("http://m210.ucoz.ru/Files/Logs/BloodGDX/apr012023205815.log")));
 
             view.getFileList().updateFileList(gr);
@@ -35,15 +39,34 @@ public class Controller {
         }
     }
 
-    public void onEntryClicked(Entry item) {
+    public void onChangePalette(Entry entry) {
+        try {
+            Palette palette = new Palette(entry, Format.getFormat(entry.getExtension()));
+            view.getTileBrowser().setPalette(palette.getModel());
+            view.getTileViewer().setPalette(palette.getModel());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void onNewArt() {
+        ArtFile artFile = new ArtFile("", 0, 256);
+        userContext.setArtFile(artFile);
+        userContext.setCurrentTile(artFile.getFirstTile());
+        view.getTileBrowser().update(artFile);
+    }
+
+    public void onLoadArt(Entry item) {
         ArtFile artFile = new ArtFile(item.getName(), item::getInputStream);
+        userContext.setArtFile(artFile);
+        userContext.setCurrentTile(artFile.getFirstTile());
+        view.getTileBrowser().update(artFile);
+    }
 
-        // update TileBrowser
-        // browser will update
-        // -> update TileViewer
-        // -> update TileProps
-
-        System.out.println(item + " " + artFile.getSize());
+    public void onEntryClicked(Entry item) {
+        if (item.getExtension().equals("art")) {
+            onLoadArt(item);
+        }
     }
 
     // Animation controller

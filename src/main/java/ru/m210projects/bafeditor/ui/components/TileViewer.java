@@ -6,6 +6,7 @@ import ru.m210projects.bafeditor.ui.Controller;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.IndexColorModel;
 
 import static com.intellij.uiDesigner.core.GridConstraints.*;
 
@@ -34,4 +35,9 @@ public class TileViewer extends JPanel {
     public TileCanvas getViewer() {
         return viewer;
     }
+
+    public void setPalette(IndexColorModel palette) {
+        viewer.setPalette(palette);
+    }
+
 }

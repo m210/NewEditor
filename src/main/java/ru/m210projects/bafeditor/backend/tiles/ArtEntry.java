@@ -16,13 +16,13 @@ public class ArtEntry implements Entry {
             268435456, 536870912, 1073741824, 2147483647 };
 
 
-    private final int num;
+    private int num;
     private final int offset;
     private final int width;
     private final int height;
     private final int sizex;
     private final int sizey;
-    private final int flags;
+    private int flags;
     private final InputStreamProvider provider;
     private final int size;
 
@@ -69,6 +69,14 @@ public class ArtEntry implements Entry {
         return !this.equals(DUMMY_ENTRY);
     }
 
+    public void setFlags(int flags) {
+        this.flags = flags;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
     public int getNum() {
         return num;
     }
@@ -110,15 +118,12 @@ public class ArtEntry implements Entry {
     }
 
     public AnimType getType() {
-        switch (flags & 192) {
-            case 64:
-                return AnimType.OSCIL;
-            case 128:
-                return AnimType.FORWARD;
-            case 192:
-                return AnimType.BACKWARD;
-        }
-        return AnimType.NONE;
+        return AnimType.get(flags);
+    }
+
+    // Blood extra bits
+    public ViewType getViewType() {
+        return ViewType.get(flags);
     }
 
     @Override

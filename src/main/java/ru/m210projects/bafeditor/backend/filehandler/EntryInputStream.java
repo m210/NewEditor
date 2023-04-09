@@ -11,7 +11,7 @@ public class EntryInputStream extends BufferedInputStream {
     private final int size;
 
     public EntryInputStream(@NotNull InputStream entryInputStream, int size) {
-        super(entryInputStream, Math.min(size, 8192));
+        super(entryInputStream, Math.max(1, Math.min(size, 8192)));
         this.remaining = size;
         this.size = size;
     }
