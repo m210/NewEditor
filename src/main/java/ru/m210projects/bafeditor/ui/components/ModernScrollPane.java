@@ -14,6 +14,10 @@ public class ModernScrollPane extends JScrollPane {
     public static final int THUMB_SIZE = 6;
     public static final int SB_SIZE = THUMB_SIZE + 2;
 
+    public static final Color scrollbarTrackColor = new Color(0x33626477, true);
+    public static final Color scrollbarSelectedColor = new Color(0xcc626477, true);
+    public static final Color scrollbarColor = new Color(0xff626477);
+
     public ModernScrollPane(Component view) {
         this();
         viewport.setView(view);
@@ -112,7 +116,7 @@ public class ModernScrollPane extends JScrollPane {
         @Override
         protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
             Graphics2D graphics2D = (Graphics2D) g.create();
-            graphics2D.setColor(Color.BLACK);
+            graphics2D.setColor(scrollbarTrackColor);
             Rectangle trackBounds = getTrackBounds();
             int orientation = scrollbar.getOrientation();
 
@@ -133,9 +137,9 @@ public class ModernScrollPane extends JScrollPane {
             int height = orientation == JScrollBar.VERTICAL ? thumbBounds.height : THUMB_SIZE;
             height = Math.max(height, THUMB_SIZE);
 
-            Color color = Color.BLACK;
+            Color color = scrollbarSelectedColor;
             if(isThumbRollover()) {
-                color = Color.BLACK;
+                color = scrollbarColor;
             }
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics2D.setColor(color);

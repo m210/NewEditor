@@ -2,6 +2,9 @@ package ru.m210projects.bafeditor.ui;
 
 
 import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
+import ru.m210projects.bafeditor.ui.components.ModernScrollPane;
 import ru.m210projects.bafeditor.ui.components.ShadowUtils;
 
 import javax.swing.*;
@@ -28,11 +31,15 @@ public class MainFrame extends JFrame {
         Controller controller = new Controller();
         View mainView = new View(controller);
 
-        iconBar.add(mainView.getIconBarPanel(), new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
-        fileListHolder.add(mainView.getFileList(), new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_BOTH, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
-        tilePropTreeHolder.add(mainView.getTilePropertiesTree(), new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_BOTH, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
-        tileBrowserHolder.add(mainView.getTileBrowser(), new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_BOTH, SIZEPOLICY_WANT_GROW | SIZEPOLICY_CAN_SHRINK, SIZEPOLICY_WANT_GROW | SIZEPOLICY_CAN_SHRINK, new Dimension(64, 64), null, null, 0, false));
+        iconBar.add(mainView.getIconBarPanel(), BorderLayout.CENTER);
+        fileListHolder.add(mainView.getFileList(), BorderLayout.CENTER);
+
+        ModernScrollPane scrollPane = new ModernScrollPane(mainView.getTileBrowser());
+        scrollPane.getVerticalScrollBar().setUnitIncrement(64);
+
+        tileBrowserHolder.add(scrollPane, BorderLayout.CENTER);
         tileViewerHolder.add(mainView.getTileViewer(), new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_BOTH, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
+        tilePropTreeHolder.add(mainView.getTilePropertiesTree(), new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_BOTH, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
         root.setBackground(Color.WHITE);
 
         setTitle(APP_NAME);

@@ -1,5 +1,6 @@
 package ru.m210projects.bafeditor.ui.components;
 
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import ru.m210projects.bafeditor.UserContext;
 import ru.m210projects.bafeditor.backend.tiles.ArtEntry;
 import ru.m210projects.bafeditor.backend.tiles.ArtFile;
@@ -93,26 +94,39 @@ public class TileBrowser extends TileCanvas {
     }
 
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        Rectangle view = this.getVisibleRect();
-        ShadowUtils.drawRectShadow(g, 0, 0, view.width - 1, view.height - 1, true);
+    public Dimension getPreferredSize() {
+        Dimension dimension = super.getPreferredSize();
+        int visibleCols = getCols();
+        int rows = list.size() / visibleCols;
+        int delta = list.size() % visibleCols;
+        dimension.height = (rows + delta) * cellHeight;
+        return dimension;
+    }
 
-        BufferedImage bf = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+    @Override
+    public void paint(Graphics g) {
+        drawBackground((Graphics2D) g);
+
+        Rectangle view = this.getVisibleRect();
+        ShadowUtils.drawRectShadow(g, view.x, view.y, view.width - 1, view.height - 1, true);
+
+        BufferedImage bf = new BufferedImage(view.width, view.height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bf.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
         g2d.setFont(new Font("Tahoma", Font.PLAIN, 9));
 
         int tilecols = getCols();
-        int tilerows = (getHeight() + cellHeight) / cellHeight;
+        int tilerows = (view.height / cellHeight) + 2;
 
+        int startIndex = tilecols * (view.y / cellHeight);
         for (int i = 0; i < tilecols * tilerows; i++) {
-            ArtEntry pic = list.get(i);
+            int index = Math.min(i + startIndex, list.size() - 1);
+            ArtEntry pic = list.get(index);
 
-            int x = (i % tilecols) * cellWidth;
-            int y = (i / tilecols) * cellHeight;
-            int tile = i + firstTile;
+            int x = (index % tilecols) * cellWidth - view.x;
+            int y = (index / tilecols) * cellHeight - view.y;
+            int tile = index + firstTile;
 
             if (pic.getSize() != 0) {
                 g2d.drawImage(getTileImage(pic, cellWidth, cellHeight), x, y, null);
@@ -147,7 +161,7 @@ public class TileBrowser extends TileCanvas {
         }
 
         g2d.dispose();
-        g.drawImage(bf, 0, 0, null);
+        g.drawImage(bf, view.x, view.y, null);
     }
 
     public void update(ArtFile artFile) {

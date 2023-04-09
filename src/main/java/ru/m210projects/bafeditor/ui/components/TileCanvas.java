@@ -54,7 +54,7 @@ public class TileCanvas extends JPanel {
         repaint();
     }
 
-    private void drawBackground(Graphics2D g) {
+    protected void drawBackground(Graphics2D g) {
         g.setPaint(new TexturePaint(texture, new Rectangle(gridX, gridY, texture.getWidth(), texture.getHeight())));
         g.fillRect(0, 0, getWidth(), getHeight());
     }
