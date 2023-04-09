@@ -22,7 +22,7 @@ public class FileListPanel extends JPanel {
         fileAdapter = new FileAdapter();
         JList<EntryModel> list = new JList<>(fileAdapter);
         list.addListSelectionListener(fileAdapter);
-        add(list, new GridConstraints(0, 0, 1, 1, ANCHOR_CENTER, FILL_BOTH, SIZEPOLICY_CAN_GROW, SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null));
+        add(list, new GridConstraints(0, 0, 1, 1, ANCHOR_CENTER, FILL_BOTH, SIZEPOLICY_WANT_GROW | SIZEPOLICY_CAN_SHRINK, SIZEPOLICY_WANT_GROW | SIZEPOLICY_CAN_SHRINK, null, new Dimension(150, 50), null));
         setOpaque(false);
     }
 

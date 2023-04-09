@@ -1,4 +1,6 @@
-package ru.m210projects.bafeditor.backend.filehandler;
+package ru.m210projects.bafeditor.backend.filehandler.fs;
+
+import ru.m210projects.bafeditor.backend.filehandler.Entry;
 
 import java.io.IOException;
 import java.io.InputStream;

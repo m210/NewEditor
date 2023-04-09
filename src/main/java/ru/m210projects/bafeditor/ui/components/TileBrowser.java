@@ -15,8 +15,6 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,7 +152,7 @@ public class TileBrowser extends TileCanvas {
 
     public void update(ArtFile artFile) {
         this.list = artFile.getEntries();
-        for(ArtEntry entry : list) {
+        for (ArtEntry entry : list) {
             entry.setRaster(null);
         }
         this.firstTile = artFile.getFirstTile();
@@ -163,7 +161,7 @@ public class TileBrowser extends TileCanvas {
 
     @Override
     public void setPalette(IndexColorModel palette) {
-        for(ArtEntry entry : list) {
+        for (ArtEntry entry : list) {
             entry.setRaster(null);
         }
         super.setPalette(palette);

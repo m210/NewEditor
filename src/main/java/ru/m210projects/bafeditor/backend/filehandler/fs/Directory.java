@@ -1,7 +1,9 @@
-package ru.m210projects.bafeditor.backend.filehandler;
+package ru.m210projects.bafeditor.backend.filehandler.fs;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.m210projects.bafeditor.backend.filehandler.Entry;
+import ru.m210projects.bafeditor.backend.filehandler.Group;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

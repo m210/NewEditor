@@ -2,6 +2,8 @@ package ru.m210projects.bafeditor.ui;
 
 import ru.m210projects.bafeditor.UserContext;
 import ru.m210projects.bafeditor.backend.filehandler.*;
+import ru.m210projects.bafeditor.backend.filehandler.fs.Directory;
+import ru.m210projects.bafeditor.backend.filehandler.grp.GrpFile;
 import ru.m210projects.bafeditor.backend.palette.Format;
 import ru.m210projects.bafeditor.backend.palette.Palette;
 import ru.m210projects.bafeditor.backend.tiles.ArtEntry;
@@ -12,6 +14,7 @@ import ru.m210projects.bafeditor.ui.components.TileViewer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -27,11 +30,13 @@ public class Controller {
         onChangePalette(new ResourceEntry("blood.act"));
 
         try {
+            GrpFile grp = new GrpFile("duke3d.grp", () -> new FileInputStream("D:\\Temp\\Duke3d.grp"));
             Directory dir = new Directory(Paths.get("D:\\Temp\\Blood\\"));
 
             EntryGroup gr = new EntryGroup("User");
-            for (Entry entry : dir.getEntries()) {
-                if (entry.getExtension().equals("art")) {
+            for (Entry entry : grp.getEntries()) {
+                if (entry.getExtension().equalsIgnoreCase("art")
+                        || entry.getExtension().equalsIgnoreCase("dat") ) {
                     gr.add(entry);
                 }
             }
@@ -72,8 +77,11 @@ public class Controller {
     }
 
     public void onEntryClicked(Entry item) {
-        if (item.getExtension().equals("art")) {
+        if (item.getExtension().equalsIgnoreCase("art")) {
             onLoadArt(item);
+        }
+        if (item.getExtension().equalsIgnoreCase("dat")) {
+            onChangePalette(item);
         }
     }
 

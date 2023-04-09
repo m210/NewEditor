@@ -2,6 +2,7 @@ package ru.m210projects.bafeditor.ui;
 
 
 import com.intellij.uiDesigner.core.GridConstraints;
+import ru.m210projects.bafeditor.ui.components.ShadowUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,4 +43,13 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    private void createUIComponents() {
+        root = new JPanel() {
+            @Override
+            public void paint(Graphics g) {
+                super.paint(g);
+                ShadowUtils.drawLineShadow(g, 0, -2, getWidth() + 1, -2, true);
+            }
+        };
+    }
 }

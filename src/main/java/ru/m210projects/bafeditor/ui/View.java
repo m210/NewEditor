@@ -6,8 +6,6 @@ import ru.m210projects.bafeditor.ui.components.filelist.FileListPanel;
 import ru.m210projects.bafeditor.ui.components.iconbar.IconBarPanel;
 import ru.m210projects.bafeditor.ui.components.tileproperties.TilePropertiesTree;
 
-import java.awt.image.BufferedImage;
-
 public class View {
 
     private final TileBrowser tileBrowser;

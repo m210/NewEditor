@@ -11,7 +11,7 @@ import javax.swing.event.ListSelectionListener;
 import java.util.Comparator;
 import java.util.List;
 
-import static ru.m210projects.bafeditor.backend.filehandler.Directory.DUMMY_ENTRY;
+import static ru.m210projects.bafeditor.backend.filehandler.fs.Directory.DUMMY_ENTRY;
 
 public class FileAdapter extends DefaultListModel<EntryModel> implements ListSelectionListener {
 

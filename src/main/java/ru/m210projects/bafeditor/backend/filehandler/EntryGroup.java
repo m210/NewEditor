@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-import static ru.m210projects.bafeditor.backend.filehandler.Directory.DUMMY_ENTRY;
+import static ru.m210projects.bafeditor.backend.filehandler.fs.Directory.DUMMY_ENTRY;
 
 public class EntryGroup implements Group<Entry> {
 
