@@ -1,8 +1,10 @@
 package ru.m210projects.bafeditor.ui.components.tileproperties;
 
+import ru.m210projects.bafeditor.ui.Controller;
 import ru.m210projects.bafeditor.ui.models.ObjectTreeNode;
 import ru.m210projects.bafeditor.ui.models.TileContainer;
 
+import javax.naming.ldap.Control;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.*;
@@ -16,7 +18,12 @@ public class TilePropertiesTree extends JTree {
     public static final int BOTTOM_PADDING = 15;
     public static final int GROUP_HEIGHT = 15;
 
-    public TilePropertiesTree() {
+
+    private final PropertiesPanel propertiesPanel;
+    private final AnimationPanel animationPanel;
+    private final BloodExtrasPanel bloodExtrasPanel;
+
+    public TilePropertiesTree(Controller controller) {
         this.setUI(new TreeUI());
         this.setBorder(new EmptyBorder(5, 0, 5, 0));
         this.setCellRenderer(new TileTreeRenderer());
@@ -36,29 +43,42 @@ public class TilePropertiesTree extends JTree {
         renderer.setBackgroundSelectionColor(null);
         renderer.setBackgroundNonSelectionColor(null);
         renderer.setBorderSelectionColor(null);
+
+        this.propertiesPanel = new PropertiesPanel();
+        this.animationPanel = new AnimationPanel(controller);
+        this.bloodExtrasPanel = new BloodExtrasPanel();
+        setModel(initTreeModel(propertiesPanel, animationPanel, bloodExtrasPanel));
+        for (int i = 0; i < getRowCount(); i++) {
+            expandRow(i);
+        }
     }
 
-    private DefaultTreeModel buildTreeModel(TileContainer container) {
+    private DefaultTreeModel initTreeModel(PropertiesPanel propertiesPanel, AnimationPanel animationPanel, BloodExtrasPanel bloodExtrasPanel) {
         DefaultMutableTreeNode style = new ObjectTreeNode("Root", null);
-        DefaultMutableTreeNode parentNode = new ObjectTreeNode("Properties", new TreeGroup("Properties"));
-        parentNode.add(new ObjectTreeNode("PropertiesPanel", new PropertiesPanel()));
+        DefaultMutableTreeNode parentNode = new ObjectTreeNode("PropertiesGroup", new TreeGroup("Properties"));
+        parentNode.add(new ObjectTreeNode("PropertiesPanel", propertiesPanel));
         style.add(parentNode);
 
-        parentNode = new ObjectTreeNode("Animation", new TreeGroup("Animation"));
-        parentNode.add(new ObjectTreeNode("AnimationPanel", new AnimationPanel()));
+        parentNode = new ObjectTreeNode("AnimationGroup", new TreeGroup("Animation"));
+        parentNode.add(new ObjectTreeNode("AnimationPanel", animationPanel));
         style.add(parentNode);
 
-        parentNode = new ObjectTreeNode("Blood extras", new TreeGroup("Blood extras"));
-        parentNode.add(new ObjectTreeNode("BloodExtras", new BloodExtrasPanel()));
+        parentNode = new ObjectTreeNode("BloodExtrasGroup", new TreeGroup("Blood extras"));
+        parentNode.add(new ObjectTreeNode("BloodExtrasPanel", bloodExtrasPanel));
         style.add(parentNode);
         return new DefaultTreeModel(style);
     }
 
-    public void update(TileContainer container) {
-        setModel(buildTreeModel(container));
-        for (int i = 0; i < getRowCount(); i++) {
-            expandRow(i);
-        }
+    public PropertiesPanel getPropertiesPanel() {
+        return propertiesPanel;
+    }
+
+    public AnimationPanel getAnimationPanel() {
+        return animationPanel;
+    }
+
+    public BloodExtrasPanel getBloodExtrasPanel() {
+        return bloodExtrasPanel;
     }
 
     public static class TileTreeRenderer extends DefaultTreeCellRenderer {

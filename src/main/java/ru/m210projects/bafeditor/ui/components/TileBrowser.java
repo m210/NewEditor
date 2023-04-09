@@ -4,7 +4,7 @@ import ru.m210projects.bafeditor.backend.tiles.ArtFile;
 
 import java.awt.*;
 
-public class TileBrowser extends TileViewer {
+public class TileBrowser extends TileCanvas {
 
     @Override
     public void paint(Graphics g) {

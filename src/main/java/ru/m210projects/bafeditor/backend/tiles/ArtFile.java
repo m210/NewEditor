@@ -19,6 +19,12 @@ public class ArtFile implements Group<ArtEntry> {
     private final String name;
     private final List<ArtEntry> entries;
 
+    public ArtFile(String name, int tileStart, int numTiles) {
+        this.name = name;
+        this.tileStart = tileStart;
+        this.entries = new ArrayList<>(numTiles);
+    }
+
     public ArtFile(String name, InputStreamProvider provider) {
         this.name = name;
         List<ArtEntry> entries = null;

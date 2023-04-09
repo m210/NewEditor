@@ -4,11 +4,11 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class RadiusButton extends JButton {
 
     private int radius = 12;
-
     private Color idleBackground = Color.WHITE;
     private Color focusedBackground = Color.GRAY;
     private Color pressedBackground = Color.WHITE;
@@ -19,21 +19,16 @@ public class RadiusButton extends JButton {
     private Color disabledText = Color.BLACK;
     private Color borderColor = new Color(214, 214, 214);
 
-    public RadiusButton(String text) {
+    public RadiusButton(String text, ActionListener callback) {
         setText(text);
         setOpaque(false);
         setBorder(new EmptyBorder(6, 6, 6, 6));
         setFocusPainted(false);
         setUI(new BasicButtonUI());
+        if (callback != null) {
+            addActionListener(callback);
+        }
         // setFont(Constants.ROBOTO_FONT.deriveFont(15.0f));
-    }
-
-    public void setRadius(int radius) {
-        this.radius = radius;
-    }
-
-    public int getRadius() {
-        return radius;
     }
 
     @Override

@@ -1,51 +1,37 @@
 package ru.m210projects.bafeditor.ui.components;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import ru.m210projects.bafeditor.ui.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 
+import static com.intellij.uiDesigner.core.GridConstraints.*;
+
 public class TileViewer extends JPanel {
 
-    float crossX = 0;
-    float crossY = 0;
-    private Color gridColor = new Color(238, 238, 238);
-    private Color borderColor = new Color(214, 214, 214);
-    private int gridSize = 16;
+    private final TileCanvas viewer;
 
-    public TileViewer() {
-        setBackground(Color.WHITE);
+    public TileViewer(Controller controller) {
+        setLayout(new GridLayoutManager(2, 1));
+        viewer = new TileCanvas();
+        add(viewer, new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, new Dimension(256, 256), null, 0, false));
+
+        JPanel propButtonsHolder = new JPanel();
+        propButtonsHolder.setOpaque(false);
+        propButtonsHolder.setLayout(new GridLayoutManager(2, 3));
+        propButtonsHolder.add(new RadiusButton("Fill", controller::onFillButtonClicked), new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
+        propButtonsHolder.add(new RadiusButton("Reset position", controller::onResetPositionButtonClicked), new GridConstraints(0, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
+        propButtonsHolder.add(new RadiusButton("Reset zoom", controller::onResetZoomButtonClicked), new GridConstraints(0, 2, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
+        propButtonsHolder.add(new RadiusButton("Cross", controller::onCrossButtonClicked), new GridConstraints(1, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
+        propButtonsHolder.add(new RadiusButton("Prev. contour", controller::onPrevContourButtonClicked), new GridConstraints(1, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
+        propButtonsHolder.add(new RadiusButton("Next contour", controller::onNextContourButtonClicked), new GridConstraints(1, 2, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
+        add(propButtonsHolder, new GridConstraints(1, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_WANT_GROW | SIZEPOLICY_CAN_SHRINK, SIZEPOLICY_FIXED, null, null, null, 0, false));
+        setOpaque(false);
     }
 
-    @Override
-    public void paint(Graphics g) {
-        drawBackground(g);
-        drawBorder(g);
-    }
-
-    private void drawBackground(Graphics g) {
-        final int cell = 2 * gridSize;
-        Rectangle view = this.getVisibleRect();
-        g.setColor(getBackground());
-        g.fillRect(0, 0, view.width, view.height);
-        g.setColor(gridColor);
-        int startX = ((int) crossX) % cell - cell;
-        int startY = ((int) crossY) % cell - cell;
-
-        int col = 0;
-        for (int y = startY; y < view.height; y += gridSize) {
-            int x = startX;
-            if(col % 2 == 0) {
-                x -= gridSize;
-            }
-            for (; x < view.width; x += cell) {
-                g.fillRect(x, y, gridSize, gridSize);
-            }
-            col++;
-        }
-    }
-
-    protected void drawBorder(Graphics g) {
-        Rectangle view = this.getVisibleRect();
-        g.setColor(borderColor);
-        g.drawRect(0, 0, view.width - 1, view.height - 1);
+    public TileCanvas getViewer() {
+        return viewer;
     }
 }

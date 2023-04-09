@@ -25,8 +25,8 @@ public class PropertiesPanel extends JPanel {
         add(new JLabel("Tile checksum:"), new GridConstraints(2, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
         add(new JTextField("28684466846"), new GridConstraints(2, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
 
-        add(new RadiusButton("X"), new GridConstraints(3, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
-        add(new RadiusButton("Y"), new GridConstraints(3, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
+        add(new RadiusButton("X", null), new GridConstraints(3, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
+        add(new RadiusButton("Y", null), new GridConstraints(3, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
 
         this.setOpaque(false);
     }
