@@ -4,6 +4,8 @@ import ru.m210projects.bafeditor.backend.filehandler.Entry;
 import ru.m210projects.bafeditor.backend.filehandler.EntryInputStream;
 import ru.m210projects.bafeditor.backend.filehandler.InputStreamProvider;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.IndexColorModel;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +18,7 @@ public class ArtEntry implements Entry {
             268435456, 536870912, 1073741824, 2147483647 };
 
 
+    private BufferedImage raster;
     private int num;
     private final int offset;
     private final int width;
@@ -52,6 +55,31 @@ public class ArtEntry implements Entry {
             throw new EOFException();
         }
         return new EntryInputStream(is, size);
+    }
+
+    public BufferedImage getRaster(IndexColorModel palette) {
+        if (raster == null) {
+            BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_INDEXED, palette);
+
+            int[] tmp = new int[1];
+            try (InputStream is = getInputStream()) {
+                for (int k = 0; k < getSize(); k++) {
+                    int row = (int) Math.floor(k / (double) height);
+                    int col = k % height;
+                    tmp[0] = is.read();
+                    image.getRaster().setPixel(row, col, tmp);
+                }
+            } catch (IOException e) {
+                System.err.println("Failed to load tile " + num);
+                System.err.println(e.getMessage());
+            }
+            raster = image;
+        }
+        return raster;
+    }
+
+    public void setRaster(BufferedImage raster) {
+        this.raster = raster;
     }
 
     @Override

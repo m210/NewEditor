@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ArtFile implements Group<ArtEntry> {
-    static final ArtEntry DUMMY_ENTRY = new ArtEntry(() -> new ByteArrayInputStream(new byte[0]), -1, -1, 0, 0, 0);
+    public static final ArtEntry DUMMY_ENTRY = new ArtEntry(() -> new ByteArrayInputStream(new byte[0]), -1, -1, 0, 0, 0);
     private static final String HEADER = "BUILDART";
     private final int firstTile;
     private final String name;

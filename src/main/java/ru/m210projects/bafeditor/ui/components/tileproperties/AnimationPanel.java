@@ -21,7 +21,7 @@ public class AnimationPanel extends JPanel {
         add(new RadiusButton("Tiles", null), new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
         add(new RadiusButton("Forward", null), new GridConstraints(0, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
         add(new RadiusButton("Speed", null), new GridConstraints(1, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
-        animationTrigger = new RadiusButton("Stop", controller::onAnimationTriggerClicked);
+        animationTrigger = new RadiusButton("Start", controller::onAnimationTriggerClicked);
         add(animationTrigger, new GridConstraints(1, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
 
         this.setOpaque(false);

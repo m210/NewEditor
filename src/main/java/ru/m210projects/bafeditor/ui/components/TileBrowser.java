@@ -4,12 +4,17 @@ import ru.m210projects.bafeditor.UserContext;
 import ru.m210projects.bafeditor.backend.tiles.ArtEntry;
 import ru.m210projects.bafeditor.backend.tiles.ArtFile;
 import ru.m210projects.bafeditor.backend.tiles.ViewType;
+import ru.m210projects.bafeditor.ui.Controller;
 import ru.m210projects.bafeditor.ui.models.BloodData;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.image.BufferedImage;
+import java.awt.image.IndexColorModel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -22,13 +27,72 @@ public class TileBrowser extends TileCanvas {
     private final Color surfaceBackground = new Color(0xD0DDFF);
     private final Color viewTypeBackground = Color.GREEN;
     private final Color tileNumberBackground = Color.WHITE;
+    private final Color tileBorder = Color.BLACK;
 
     private int cellWidth = 128;
     private int cellHeight = 128;
-    private boolean fillThumbnails;
+    private boolean fillThumbnails = false;
     private List<ArtEntry> list = new ArrayList<>();
-    private BufferedImage[] tiles = new BufferedImage[0];
+
     private int firstTile = 0;
+
+    public TileBrowser(Controller controller) {
+        MouseAdapter adapter = new MouseAdapter() {
+            private int tileStart = -1;
+            private int tileEnd = -1;
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    this.tileStart = calcSelectedTile(e);
+                    if (tileStart != -1) {
+                        controller.onTileSelected(tileStart);
+                    }
+                } else if (SwingUtilities.isRightMouseButton(e)) {
+                    this.tileStart = calcSelectedTile(e);
+                    if (tileStart != -1) {
+                        controller.onShowPopupMenu(tileStart, e);
+                    }
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    this.tileStart = -1;
+                    this.tileEnd = -1;
+                }
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    if (tileStart == -1) {
+                        return;
+                    }
+
+                    int tileEnd = calcSelectedTile(e);
+                    if (tileEnd != -1) {
+                        if (this.tileEnd != tileEnd) {
+                            if (tileStart != tileEnd) {
+                                if (tileStart < tileEnd) {
+                                    controller.onTileRangeSelected(tileStart, tileEnd);
+                                } else {
+                                    controller.onTileRangeSelected(tileEnd, tileStart);
+                                }
+                            } else if (this.tileEnd != -1) {
+                                controller.onTileSelected(tileEnd);
+                            }
+                            this.tileEnd = tileEnd;
+                        }
+                    }
+                }
+            }
+        };
+
+        this.addMouseListener(adapter);
+        this.addMouseMotionListener(adapter);
+    }
 
     @Override
     public void paint(Graphics g) {
@@ -52,7 +116,11 @@ public class TileBrowser extends TileCanvas {
             int y = (i / tilecols) * cellHeight;
             int tile = i + firstTile;
 
-            g2d.drawImage(getTileImage(pic, cellWidth, cellHeight), x, y, null);
+            if (pic.getSize() != 0) {
+                g2d.drawImage(getTileImage(pic, cellWidth, cellHeight), x, y, null);
+            }
+            g2d.setColor(tileBorder);
+            g2d.drawRect(x, y, cellWidth, cellHeight);
 
             x = 3 + x;
             y = y + cellHeight - 10 - BACKGROUND_BORDER;
@@ -86,9 +154,19 @@ public class TileBrowser extends TileCanvas {
 
     public void update(ArtFile artFile) {
         this.list = artFile.getEntries();
-        this.tiles = new BufferedImage[list.size()];
+        for(ArtEntry entry : list) {
+            entry.setRaster(null);
+        }
         this.firstTile = artFile.getFirstTile();
         repaint();
+    }
+
+    @Override
+    public void setPalette(IndexColorModel palette) {
+        for(ArtEntry entry : list) {
+            entry.setRaster(null);
+        }
+        super.setPalette(palette);
     }
 
     private int getRows() {
@@ -97,6 +175,16 @@ public class TileBrowser extends TileCanvas {
 
     private int getCols() {
         return Math.max(getWidth() / cellWidth, 1);
+    }
+
+    private int calcSelectedTile(MouseEvent e) {
+        int selectedCol = e.getX() / cellWidth;
+        int selectedRow = e.getY() / cellHeight;
+        int cols = getCols();
+        if (selectedCol <= cols - 1) {
+            return Math.min(selectedCol + cols * selectedRow, list.size() - 1) + firstTile;
+        }
+        return -1;
     }
 
     private Rectangle drawText(Graphics2D g2d, String text, int x, int y, Color textColor, Color backgroundColor) {
@@ -121,23 +209,7 @@ public class TileBrowser extends TileCanvas {
     }
 
     private BufferedImage getTileImage(ArtEntry pic, int cellWidth, int cellHeight) {
-        BufferedImage image = tiles[pic.getNum() - firstTile];
-        if (image == null) {
-            image = new BufferedImage(Math.max(1, pic.getWidth()), Math.max(1, pic.getHeight()), BufferedImage.TYPE_BYTE_INDEXED, palette);
-
-            int[] tmp = new int[1];
-            try(InputStream is = pic.getInputStream()) {
-                for (int k = 0; k < pic.getSize(); k++) {
-                    int row = (int) Math.floor(k / (double) pic.getHeight());
-                    int col = k % pic.getHeight();
-                    tmp[0] = is.read();
-                    image.getRaster().setPixel(row, col, tmp);
-                }
-            } catch (IOException e) {
-                System.err.println("Failed to load tile " + pic.getNum());
-                System.err.println(e.getMessage());
-            }
-        }
+        BufferedImage image = pic.getRaster(palette);
 
         double w = image.getWidth();
         double h = image.getHeight();

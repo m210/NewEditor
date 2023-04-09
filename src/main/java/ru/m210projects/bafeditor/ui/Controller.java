@@ -4,18 +4,22 @@ import ru.m210projects.bafeditor.UserContext;
 import ru.m210projects.bafeditor.backend.filehandler.*;
 import ru.m210projects.bafeditor.backend.palette.Format;
 import ru.m210projects.bafeditor.backend.palette.Palette;
+import ru.m210projects.bafeditor.backend.tiles.ArtEntry;
 import ru.m210projects.bafeditor.backend.tiles.ArtFile;
 import ru.m210projects.bafeditor.ui.components.RadiusButton;
+import ru.m210projects.bafeditor.ui.components.TileViewer;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
 
 public class Controller {
 
-    private View view;
     private final UserContext userContext = UserContext.getInstance();
+    private View view;
 
     public void onInit(View view) {
         this.view = view;
@@ -53,14 +57,18 @@ public class Controller {
         ArtFile artFile = new ArtFile("", 0, 256);
         userContext.setArtFile(artFile);
         userContext.setCurrentTile(artFile.getFirstTile());
+        view.getTilePropertiesTree().update(artFile.getFirstTile());
         view.getTileBrowser().update(artFile);
+        view.getTileViewer().repaint();
     }
 
     public void onLoadArt(Entry item) {
         ArtFile artFile = new ArtFile(item.getName(), item::getInputStream);
         userContext.setArtFile(artFile);
         userContext.setCurrentTile(artFile.getFirstTile());
+        view.getTilePropertiesTree().update(artFile.getFirstTile());
         view.getTileBrowser().update(artFile);
+        view.getTileViewer().repaint();
     }
 
     public void onEntryClicked(Entry item) {
@@ -71,38 +79,85 @@ public class Controller {
 
     // Animation controller
 
-    boolean enabled = true;
     public void onAnimationTriggerClicked(ActionEvent e) {
-        System.out.println("onAnimationButtonClicked");
-        enabled = !enabled;
         RadiusButton animationTrigger = (RadiusButton) e.getSource();
-        animationTrigger.setText(enabled ? "Stop" : "Start");
+        animationTrigger.setText("Start");
+
+        TileViewer tileViewer = view.getTileViewer();
+        if (tileViewer.isAnimationRunning()) {
+            tileViewer.stopAnimation();
+        } else {
+            tileViewer.startAnimation();
+            animationTrigger.setText("Stop");
+        }
+    }
+
+    // Tile browser controller
+
+    public void onTileSelected(int tile) {
+        userContext.setCurrentTile(tile);
+        view.getTileViewer().setSelectedTile(tile);
+        view.getTilePropertiesTree().update(tile);
+    }
+
+    public void onTileRangeSelected(int start, int end) {
+        userContext.setCurrentTile(start);
+    }
+
+    public void onShowPopupMenu(int tile, MouseEvent e) {
+        System.out.println("onShowPopupMenu " + tile);
     }
 
     // Tile viewer controller
 
     public void onFillButtonClicked(ActionEvent e) {
-        System.out.println("onFillButtonClicked");
+        ArtEntry pic = userContext.getCurrentEntry();
+        TileViewer viewer = view.getTileViewer();
+        if (pic.getSize() != 0) {
+            Dimension dimension = viewer.getCanvasSize();
+            float kt = pic.getWidth() / (float) pic.getHeight();
+            double kv = dimension.getWidth() / dimension.getHeight();
+            float scale;
+            float size;
+            if (kv >= kt) {
+                size = (float) (dimension.getHeight() / pic.getHeight());
+            } else {
+                size = (float) (dimension.getWidth() / pic.getWidth());
+            }
+
+            if (size >= 1.0) {
+                scale = Math.min(size - size % 1, 10.0f);
+            } else if (size < 0.25f) {
+                scale = 0.25f;
+            } else {
+                scale = Math.min(size, 10.0f);
+            }
+
+            viewer.setScale(scale);
+//          zoomSlider.setValue((int) (scale * 100));
+            viewer.setCross((int) ((dimension.getWidth() / 2) + (int) (scale * pic.getOffsetX())),
+                    (int) ((dimension.getHeight() / 2) + (int) (scale * pic.getOffsetY())));
+        }
     }
 
     public void onResetPositionButtonClicked(ActionEvent e) {
-        System.out.println("onResetPositionButtonClicked");
+        view.getTileViewer().resetPosition();
     }
 
     public void onResetZoomButtonClicked(ActionEvent e) {
-        System.out.println("onResetZoomButtonClicked");
+        view.getTileViewer().setScale(1.0f);
     }
 
     public void onCrossButtonClicked(ActionEvent e) {
-        System.out.println("onCrossButtonClicked");
+        view.getTileViewer().switchCross();
     }
 
     public void onPrevContourButtonClicked(ActionEvent e) {
-        System.out.println("onPrevContourButtonClicked");
+        view.getTileViewer().switchPrevTile();
     }
 
     public void onNextContourButtonClicked(ActionEvent e) {
-        System.out.println("onNextContourButtonClicked");
+        view.getTileViewer().switchNextTile();
     }
 
 }

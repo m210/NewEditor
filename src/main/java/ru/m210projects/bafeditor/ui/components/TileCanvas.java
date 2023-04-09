@@ -2,52 +2,56 @@ package ru.m210projects.bafeditor.ui.components;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 
 public class TileCanvas extends JPanel {
 
-    float crossX = 0;
-    float crossY = 0;
-    private Color gridColor = new Color(238, 238, 238);
-    private Color borderColor = new Color(214, 214, 214);
+    protected IndexColorModel palette;
+    int gridX = 0;
+    int gridY = 0;
+    private final Color gridColor = new Color(238, 238, 238);
+    private final Color borderColor = new Color(214, 214, 214);
     private int gridSize = 16;
 
-    protected IndexColorModel palette;
+    private BufferedImage texture;
 
     public TileCanvas() {
         setBackground(Color.WHITE);
+        this.texture = createTexture();
+    }
+
+    protected BufferedImage createTexture() {
+        final int cell = 2 * gridSize;
+        BufferedImage texture = new BufferedImage(cell, cell, BufferedImage.TYPE_INT_RGB);
+        Graphics gr = texture.createGraphics();
+        gr.setColor(getBackground());
+        gr.fillRect(0, gridSize, gridSize, gridSize);
+        gr.fillRect(gridSize, 0, gridSize, gridSize);
+        gr.setColor(gridColor);
+        gr.fillRect(0, 0, gridSize, gridSize);
+        gr.fillRect(gridSize, gridSize, gridSize, gridSize);
+        gr.dispose();
+
+        return texture;
     }
 
     @Override
     public void paint(Graphics g) {
-        drawBackground(g);
-        drawBorder(g);
+        Graphics2D g2d = (Graphics2D) g.create();
+        drawBackground(g2d);
+        drawBorder(g2d);
+        g2d.dispose();
     }
 
     public void setPalette(IndexColorModel palette) {
         this.palette = palette;
+        repaint();
     }
 
-    private void drawBackground(Graphics g) {
-        final int cell = 2 * gridSize;
-        Rectangle view = this.getVisibleRect();
-        g.setColor(getBackground());
-        g.fillRect(0, 0, view.width, view.height);
-        g.setColor(gridColor);
-        int startX = ((int) crossX) % cell - cell;
-        int startY = ((int) crossY) % cell - cell;
-
-        int col = 0;
-        for (int y = startY; y < view.height; y += gridSize) {
-            int x = startX;
-            if(col % 2 == 0) {
-                x -= gridSize;
-            }
-            for (; x < view.width; x += cell) {
-                g.fillRect(x, y, gridSize, gridSize);
-            }
-            col++;
-        }
+    private void drawBackground(Graphics2D g) {
+        g.setPaint(new TexturePaint(texture, new Rectangle(gridX, gridY, texture.getWidth(), texture.getHeight())));
+        g.fillRect(0, 0, getWidth(), getHeight());
     }
 
     protected void drawBorder(Graphics g) {

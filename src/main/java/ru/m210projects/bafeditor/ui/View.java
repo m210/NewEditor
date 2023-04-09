@@ -6,6 +6,8 @@ import ru.m210projects.bafeditor.ui.components.filelist.FileListPanel;
 import ru.m210projects.bafeditor.ui.components.iconbar.IconBarPanel;
 import ru.m210projects.bafeditor.ui.components.tileproperties.TilePropertiesTree;
 
+import java.awt.image.BufferedImage;
+
 public class View {
 
     private final TileBrowser tileBrowser;
@@ -17,8 +19,10 @@ public class View {
 
     public View(Controller controller) {
         this.controller = controller;
-        this.tileBrowser = new TileBrowser();
+
+        this.tileBrowser = new TileBrowser(controller);
         this.tileViewer = initTileViewer();
+
         this.fileList = initFileList();
         this.tilePropertiesTree = initTilePropTree();
         this.iconBarPanel = initIconBar();

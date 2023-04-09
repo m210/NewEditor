@@ -1,5 +1,8 @@
 package ru.m210projects.bafeditor.ui.components.tileproperties;
 
+import ru.m210projects.bafeditor.UserContext;
+import ru.m210projects.bafeditor.backend.tiles.AnimType;
+import ru.m210projects.bafeditor.backend.tiles.ArtEntry;
 import ru.m210projects.bafeditor.ui.Controller;
 import ru.m210projects.bafeditor.ui.models.ObjectTreeNode;
 
@@ -65,6 +68,23 @@ public class TilePropertiesTree extends JTree {
         parentNode.add(new ObjectTreeNode("BloodExtrasPanel", bloodExtrasPanel));
         style.add(parentNode);
         return new DefaultTreeModel(style);
+    }
+
+    public void update(int tile) {
+//        viewAngle = 0;
+//        angleLabel.setText("Angle: " + viewAngle);
+
+        ArtEntry pic = UserContext.getInstance().getArtEntry(tile);
+        if (pic.exists()) {
+            if (pic.getType() != AnimType.NONE) {
+                animationPanel.getAnimationTrigger().setText("Stop");
+            } else {
+                animationPanel.getAnimationTrigger().setText("Start");
+            }
+        } else {
+            animationPanel.getAnimationTrigger().setText("Start");
+        }
+        repaint();
     }
 
     public PropertiesPanel getPropertiesPanel() {
