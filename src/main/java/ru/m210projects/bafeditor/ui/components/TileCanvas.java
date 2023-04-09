@@ -18,13 +18,14 @@ public class TileCanvas extends JPanel {
 
     public TileCanvas() {
         setBackground(Color.WHITE);
-        this.texture = createTexture();
+        this.texture = createTexture(1.0f);
     }
 
-    protected BufferedImage createTexture() {
+    protected BufferedImage createTexture(float scale) {
+        int gridSize = (int) (this.gridSize * scale);
         final int cell = 2 * gridSize;
         BufferedImage texture = new BufferedImage(cell, cell, BufferedImage.TYPE_INT_RGB);
-        Graphics gr = texture.createGraphics();
+        Graphics2D gr = texture.createGraphics();
         gr.setColor(getBackground());
         gr.fillRect(0, gridSize, gridSize, gridSize);
         gr.fillRect(gridSize, 0, gridSize, gridSize);
@@ -32,9 +33,13 @@ public class TileCanvas extends JPanel {
         gr.fillRect(0, 0, gridSize, gridSize);
         gr.fillRect(gridSize, gridSize, gridSize, gridSize);
         gr.dispose();
-
         return texture;
     }
+
+    public void setScale(float scale) {
+        this.texture = createTexture(scale);
+    }
+
 
     @Override
     public void paint(Graphics g) {

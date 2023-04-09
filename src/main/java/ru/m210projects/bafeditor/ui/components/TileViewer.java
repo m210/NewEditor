@@ -60,11 +60,7 @@ public class TileViewer extends JPanel {
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                crossX = e.getX() + mouseX;
-                crossY = e.getY() + mouseY;
-                viewer.gridX = crossX;
-                viewer.gridY = crossY;
-
+                setCross(e.getX() + mouseX, e.getY() + mouseY);
                 repaint();
             }
 
@@ -125,8 +121,7 @@ public class TileViewer extends JPanel {
         anmTh.start();
 
         Dimension dimension = new Dimension(256, 256);
-        crossX = dimension.width / 2;
-        crossY = dimension.height / 2;
+        setCross(dimension.width / 2, dimension.height / 2);
 
         setLayout(new GridLayoutManager(2, 1));
         add(viewer, new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, dimension, null, 0, false));
@@ -161,6 +156,8 @@ public class TileViewer extends JPanel {
     public void setCross(int crossX, int crossY) {
         this.crossX = crossX;
         this.crossY = crossY;
+        viewer.gridX = crossX;
+        viewer.gridY = crossY;
     }
 
     public void switchCross() {
@@ -179,13 +176,13 @@ public class TileViewer extends JPanel {
     }
 
     public void resetPosition() {
-        crossX = viewer.getWidth() / 2;
-        crossY = viewer.getHeight() / 2;
+        setCross(viewer.getWidth() / 2, viewer.getHeight() / 2);
         repaint();
     }
 
     public void setScale(float scale) {
         this.scale = scale;
+        viewer.setScale(scale);
         repaint();
     }
 
