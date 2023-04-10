@@ -30,8 +30,9 @@
       </grid>
       <grid id="faf9d" binding="tileBrowserHolder" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints>
-          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="-1" height="300"/>
+          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <minimum-size width="128" height="-1"/>
+            <preferred-size width="128" height="128"/>
           </grid>
         </constraints>
         <properties>

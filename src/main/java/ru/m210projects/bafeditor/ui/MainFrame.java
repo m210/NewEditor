@@ -24,12 +24,13 @@ public class MainFrame extends JFrame {
     private JPanel tileViewerHolder;
     private JPanel tilePropTreeHolder;
     private JPanel tilePanelHolder;
+    private View mainView;
 
     public MainFrame() {
         setContentPane(root);
 
         Controller controller = new Controller();
-        View mainView = new View(controller);
+        mainView = new View(controller);
 
         iconBar.add(mainView.getIconBarPanel(), BorderLayout.CENTER);
         fileListHolder.add(mainView.getFileList(), BorderLayout.CENTER);
@@ -48,6 +49,12 @@ public class MainFrame extends JFrame {
         setVisible(true);
         pack();
         setLocationRelativeTo(null);
+    }
+
+    @Override
+    public void dispose() {
+
+        super.dispose();
     }
 
     private void createUIComponents() {

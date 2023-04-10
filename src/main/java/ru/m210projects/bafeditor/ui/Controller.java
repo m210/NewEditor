@@ -21,6 +21,30 @@ import java.nio.file.Paths;
 
 public class Controller {
 
+    /**
+     * Загрузка конфига
+     * Последние открытые файлы
+     * Загрузка полатры
+     * Сохранение палитры
+     * Кастомная палитра
+     * Загрузка surface и voxel данных
+     * вырезать / копировать тайлы
+     * вставить новый тайл, сдвинуть тайл влево / вправо
+     * Экпорт тайлов в картинку
+     * Импорт тайлов из картинки
+     * Отчитстить / удалить тайлы
+     * Тайл в буфере-обмена
+     * Конвертация тайлов
+     * Выпадающее меню по тайлам
+     * изменение фона TileCanvas
+     * Настройка размеров тайлов в TileBrowser
+     * Resize тайлов
+     * Импорт def
+     * Задание первого тайла в ART файле
+     * batch export
+     * Zoom ползунок
+     */
+
     private final UserContext userContext = UserContext.getInstance();
     private View view;
 
@@ -34,7 +58,7 @@ public class Controller {
             Directory dir = new Directory(Paths.get("D:\\Temp\\Blood\\"));
 
             EntryGroup gr = new EntryGroup("User");
-            for (Entry entry : grp.getEntries()) {
+            for (Entry entry : dir.getEntries()) {
                 if (entry.getExtension().equalsIgnoreCase("art")
                         || entry.getExtension().equalsIgnoreCase("dat") ) {
                     gr.add(entry);

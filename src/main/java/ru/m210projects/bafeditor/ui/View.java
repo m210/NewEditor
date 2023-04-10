@@ -67,4 +67,8 @@ public class View {
     public IconBarPanel getIconBarPanel() {
         return iconBarPanel;
     }
+
+    public void dispose() {
+
+    }
 }
