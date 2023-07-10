@@ -1,6 +1,7 @@
 package ru.m210projects.bafeditor.ui.components;
 
 import javax.swing.*;
+import javax.swing.plaf.PanelUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
@@ -17,8 +18,14 @@ public class TileCanvas extends JPanel {
     private BufferedImage texture;
 
     public TileCanvas() {
+        super(false);
         setBackground(Color.WHITE);
         this.texture = createTexture(1.0f);
+    }
+
+    @Override
+    public void setUI(PanelUI ui) {
+        /* nothing */
     }
 
     protected BufferedImage createTexture(float scale) {

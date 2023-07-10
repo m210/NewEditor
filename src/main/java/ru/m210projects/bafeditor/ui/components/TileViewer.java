@@ -10,6 +10,7 @@ import ru.m210projects.bafeditor.ui.AnimationRunnable;
 import ru.m210projects.bafeditor.ui.Controller;
 
 import javax.swing.*;
+import javax.swing.plaf.PanelUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -35,6 +36,7 @@ public class TileViewer extends JPanel {
     private volatile int animIndex = 0;
 
     public TileViewer(Controller controller) {
+        super(false);
         this.viewer = new TileCanvas() {
             @Override
             public void paint(Graphics g) {
@@ -50,8 +52,8 @@ public class TileViewer extends JPanel {
             public void mouseMoved(MouseEvent e) {
                 int x = e.getX();
                 int y = e.getY();
-                Rectangle Bounds = getBounds();
-                if (Bounds != null && Bounds.contains(x, y)) {
+                Rectangle bounds = getBounds();
+                if (bounds != null && bounds.contains(x, y)) {
                     setCursor(new Cursor(Cursor.MOVE_CURSOR));
                 } else {
                     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -137,6 +139,11 @@ public class TileViewer extends JPanel {
         propButtonsHolder.add(new RadiusButton("Next contour", controller::onNextContourButtonClicked), new GridConstraints(1, 2, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
         add(propButtonsHolder, new GridConstraints(1, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_WANT_GROW | SIZEPOLICY_CAN_SHRINK, SIZEPOLICY_FIXED, null, null, null, 0, false));
         setOpaque(false);
+    }
+
+    @Override
+    public void setUI(PanelUI ui) {
+        /* nothing */
     }
 
     public Dimension getCanvasSize() {

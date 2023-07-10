@@ -16,6 +16,6 @@ public class DataArtEntry extends ArtEntry {
 
     @Override
     public boolean exists() {
-        return true;
+        return data != null && data.length != 0;
     }
 }

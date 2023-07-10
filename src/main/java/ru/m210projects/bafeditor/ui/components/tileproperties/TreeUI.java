@@ -27,7 +27,7 @@ public class TreeUI extends BasicTreeUI {
             @Override
             public void mouseMoved(MouseEvent e) {
                 TreePath path = getClosestPathForLocation(tree, e.getX(), e.getY());
-                if (path != null) {
+                if (path != null && !path.equals(tree.getSelectionPath())) {
                     // Allow to use listeners in node when mouse on it
                     startEditing(path, e);
                 }

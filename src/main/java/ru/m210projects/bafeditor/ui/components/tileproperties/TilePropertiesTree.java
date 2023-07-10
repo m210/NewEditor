@@ -70,9 +70,10 @@ public class TilePropertiesTree extends JTree {
         return new DefaultTreeModel(style);
     }
 
-    public void update(int tile) {
+    public void onTileSelected(int tile) {
 //        viewAngle = 0;
 //        angleLabel.setText("Angle: " + viewAngle);
+        propertiesPanel.onTileSelected(tile);
 
         ArtEntry pic = UserContext.getInstance().getArtEntry(tile);
         if (pic.exists()) {

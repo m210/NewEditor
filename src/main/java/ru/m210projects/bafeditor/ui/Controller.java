@@ -86,7 +86,7 @@ public class Controller {
         ArtFile artFile = new ArtFile("", 0, 256);
         userContext.setArtFile(artFile);
         userContext.setCurrentTile(artFile.getFirstTile());
-        view.getTilePropertiesTree().update(artFile.getFirstTile());
+        view.getTilePropertiesTree().onTileSelected(artFile.getFirstTile());
         view.getTileBrowser().update(artFile);
         view.getTileViewer().repaint();
     }
@@ -95,7 +95,7 @@ public class Controller {
         ArtFile artFile = new ArtFile(item.getName(), item::getInputStream);
         userContext.setArtFile(artFile);
         userContext.setCurrentTile(artFile.getFirstTile());
-        view.getTilePropertiesTree().update(artFile.getFirstTile());
+        view.getTilePropertiesTree().onTileSelected(artFile.getFirstTile());
         view.getTileBrowser().update(artFile);
         view.getTileViewer().repaint();
     }
@@ -108,6 +108,8 @@ public class Controller {
             onChangePalette(item);
         }
     }
+
+
 
     // Animation controller
 
@@ -129,7 +131,7 @@ public class Controller {
     public void onTileSelected(int tile) {
         userContext.setCurrentTile(tile);
         view.getTileViewer().setSelectedTile(tile);
-        view.getTilePropertiesTree().update(tile);
+        view.getTilePropertiesTree().onTileSelected(tile);
     }
 
     public void onTileRangeSelected(int start, int end) {

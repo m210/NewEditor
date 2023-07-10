@@ -52,6 +52,9 @@ public class View {
         return tileBrowser;
     }
 
+    /**
+     * @return The panel with selected tile canvas
+     */
     public TileViewer getTileViewer() {
         return tileViewer;
     }

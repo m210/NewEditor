@@ -8,6 +8,7 @@ import ru.m210projects.bafeditor.backend.filehandler.Group;
 import ru.m210projects.bafeditor.ui.models.EntryModel;
 
 import javax.swing.*;
+import javax.swing.plaf.PanelUI;
 import java.awt.*;
 
 import static com.intellij.uiDesigner.core.GridConstraints.*;
@@ -17,6 +18,7 @@ public class FileListPanel extends JPanel {
     private final FileAdapter fileAdapter;
 
     public FileListPanel() {
+        super(false);
         setLayout(new GridLayoutManager(1, 1));
 
         fileAdapter = new FileAdapter();
@@ -34,4 +36,8 @@ public class FileListPanel extends JPanel {
         fileAdapter.update(group);
     }
 
+    @Override
+    public void setUI(PanelUI ui) {
+        /* nothing */
+    }
 }

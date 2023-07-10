@@ -10,6 +10,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
+import java.util.zip.CRC32;
 
 public class ArtEntry implements Entry {
 
@@ -28,6 +29,8 @@ public class ArtEntry implements Entry {
     private int flags;
     private final InputStreamProvider provider;
     private final int size;
+
+    private long checksum;
 
     public ArtEntry(InputStreamProvider provider, int num, int offset, int width, int height, int flags) {
         this.provider = provider;
@@ -60,6 +63,7 @@ public class ArtEntry implements Entry {
     public BufferedImage getRaster(IndexColorModel palette) {
         if (raster == null) {
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_INDEXED, palette);
+            CRC32 crc32 = new CRC32();
 
             int[] tmp = new int[1];
             try (InputStream is = getInputStream()) {
@@ -67,8 +71,10 @@ public class ArtEntry implements Entry {
                     int row = (int) Math.floor(k / (double) height);
                     int col = k % height;
                     tmp[0] = is.read();
+                    crc32.update(tmp[0]);
                     image.getRaster().setPixel(row, col, tmp);
                 }
+                checksum = crc32.getValue();
             } catch (IOException e) {
                 System.err.println("Failed to load tile " + num);
                 System.err.println(e.getMessage());
@@ -137,6 +143,11 @@ public class ArtEntry implements Entry {
         return (byte) ((flags >> 16) & 0xFF);
     }
 
+    public void setOffset(byte x, byte y) {
+        flags &= ~0x00FFFF00;
+        flags |= ((x & 0xFF) << 8) | ((y & 0xFF) << 16);
+    }
+
     public int getFrames() {
         return flags & 0x3F;
     }
@@ -152,6 +163,10 @@ public class ArtEntry implements Entry {
     // Blood extra bits
     public ViewType getViewType() {
         return ViewType.get(flags);
+    }
+
+    public long getChecksum() {
+        return checksum;
     }
 
     @Override

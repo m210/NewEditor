@@ -7,6 +7,7 @@ import ru.m210projects.bafeditor.ui.components.RadiusButton;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.PanelUI;
 
 import static com.intellij.uiDesigner.core.GridConstraints.*;
 import static com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED;
@@ -16,6 +17,7 @@ public class AnimationPanel extends JPanel {
     private final RadiusButton animationTrigger;
 
     public AnimationPanel(Controller controller) {
+        super(false);
         setBorder(new EmptyBorder(TilePropertiesTree.TOP_PADDING, 0, TilePropertiesTree.BOTTOM_PADDING, 0));
         setLayout(new GridLayoutManager(2, 2));
         add(new RadiusButton("Tiles", null), new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
@@ -29,5 +31,10 @@ public class AnimationPanel extends JPanel {
 
     public RadiusButton getAnimationTrigger() {
         return animationTrigger;
+    }
+
+    @Override
+    public void setUI(PanelUI ui) {
+        /* nothing */
     }
 }
