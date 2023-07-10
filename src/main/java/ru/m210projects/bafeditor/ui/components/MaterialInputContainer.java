@@ -95,24 +95,17 @@ public class MaterialInputContainer extends JPanel {
         return value;
     }
 
-    public boolean setValue(int value) {
-        int oldValue = this.value;
-        boolean clamped = false;
-
+    public void setValue(int value) {
         if (minValue != null && value < minValue) {
             value = minValue;
-            clamped = oldValue == minValue;
         }
 
         if (maxValue != null && value > maxValue) {
             value = maxValue;
-            clamped = oldValue == maxValue;
         }
 
         this.value = value;
         editText.setText(Integer.toString(value));
-
-        return !clamped;
     }
 
     public class MouseInputChanger implements MouseListener, MouseMotionListener {
@@ -143,14 +136,13 @@ public class MaterialInputContainer extends JPanel {
 
             int oldValue = getValue();
             int newValue = value - (dx - mouseX) / 4;
-            if (oldValue != newValue) {
-                int direction = (int) Math.signum(lastSuccessfulX - mouseX);
-                if (!setValue(newValue) && (direction == 1 && oldValue > newValue || direction == -1 && oldValue < newValue)) {
-                    robot.mouseMove(lastSuccessfulX, e.getLocationOnScreen().y);
-                    return;
-                }
+            int direction = (int) Math.signum(lastSuccessfulX - mouseX);
+            if ((direction == 1 && oldValue <= minValue || direction == -1 && oldValue >= maxValue)) {
+                robot.mouseMove(lastSuccessfulX, e.getLocationOnScreen().y);
+                return;
             }
 
+            setValue(newValue);
             lastSuccessfulX = e.getXOnScreen();
             if (mouseX <= displayBounds.x) {
                 dx += displayBounds.width;
