@@ -2,6 +2,8 @@ package ru.m210projects.bafeditor.ui.components.tileproperties;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import ru.m210projects.bafeditor.ui.Controller;
+import ru.m210projects.bafeditor.ui.components.AngelChangerPanel;
 import ru.m210projects.bafeditor.ui.components.RadiusButton;
 
 import javax.swing.*;
@@ -13,7 +15,7 @@ import static com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED;
 
 public class BloodExtrasPanel extends JPanel {
 
-    public BloodExtrasPanel() {
+    public BloodExtrasPanel(Controller controller) {
         super(false);
         setBorder(new EmptyBorder(TilePropertiesTree.TOP_PADDING, 0, TilePropertiesTree.BOTTOM_PADDING, 0));
         setLayout(new GridLayoutManager(2, 2));
@@ -21,7 +23,7 @@ public class BloodExtrasPanel extends JPanel {
         add(new RadiusButton("ID", null), new GridConstraints(0, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
 
         add(new RadiusButton("None", null), new GridConstraints(1, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
-        add(new RadiusButton("Angle", null), new GridConstraints(1, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
+        add(new AngelChangerPanel(45, null), new GridConstraints(1, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
 
         this.setOpaque(false);
     }

@@ -11,6 +11,7 @@ import ru.m210projects.bafeditor.backend.tiles.ArtFile;
 import ru.m210projects.bafeditor.ui.components.RadiusButton;
 import ru.m210projects.bafeditor.ui.components.TileViewer;
 
+import javax.swing.event.ChangeEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -54,7 +55,7 @@ public class Controller {
         onChangePalette(new ResourceEntry("blood.act"));
 
         try {
-            GrpFile grp = new GrpFile("duke3d.grp", () -> new FileInputStream("D:\\Temp\\Duke3d.grp"));
+            // GrpFile grp = new GrpFile("duke3d.grp", () -> new FileInputStream("D:\\Temp\\Duke3d.grp"));
             Directory dir = new Directory(Paths.get("D:\\Temp\\Blood\\"));
 
             EntryGroup gr = new EntryGroup("User");
@@ -192,6 +193,20 @@ public class Controller {
 
     public void onNextContourButtonClicked(ActionEvent e) {
         view.getTileViewer().switchNextTile();
+    }
+
+    public void onXOffsetChanged(ChangeEvent e) {
+        UserContext context = UserContext.getInstance();
+        ArtEntry pic = context.getArtEntry(context.getCurrentTile());
+        pic.setOffset((byte) (int) e.getSource(), pic.getOffsetY());
+        view.getTileViewer().repaint();
+    }
+
+    public void onYOffsetChanged(ChangeEvent e) {
+        UserContext context = UserContext.getInstance();
+        ArtEntry pic = context.getArtEntry(context.getCurrentTile());
+        pic.setOffset(pic.getOffsetX(), (byte) (int) e.getSource());
+        view.getTileViewer().repaint();
     }
 
 }

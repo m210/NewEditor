@@ -47,7 +47,7 @@ public class MaterialInputContainer extends JPanel {
         this.editText.addActionListener(e -> {
             int value = this.value;
             try {
-                value = Integer.parseInt(editText.getText().replaceAll("[^\\d]", ""));
+                value = Integer.parseInt(editText.getText().replaceAll("[^\\d-]", ""));
             } catch (Exception ignored) {
             }
             setValue(value);

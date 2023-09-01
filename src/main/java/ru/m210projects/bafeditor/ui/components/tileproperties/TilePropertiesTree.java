@@ -45,9 +45,9 @@ public class TilePropertiesTree extends JTree {
         renderer.setBackgroundNonSelectionColor(null);
         renderer.setBorderSelectionColor(null);
 
-        this.propertiesPanel = new PropertiesPanel();
+        this.propertiesPanel = new PropertiesPanel(controller);
         this.animationPanel = new AnimationPanel(controller);
-        this.bloodExtrasPanel = new BloodExtrasPanel();
+        this.bloodExtrasPanel = new BloodExtrasPanel(controller);
         setModel(initTreeModel(propertiesPanel, animationPanel, bloodExtrasPanel));
         for (int i = 0; i < getRowCount(); i++) {
             expandRow(i);

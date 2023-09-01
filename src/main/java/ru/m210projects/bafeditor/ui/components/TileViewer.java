@@ -5,7 +5,6 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import ru.m210projects.bafeditor.UserContext;
 import ru.m210projects.bafeditor.backend.tiles.AnimType;
 import ru.m210projects.bafeditor.backend.tiles.ArtEntry;
-import ru.m210projects.bafeditor.backend.tiles.ArtFile;
 import ru.m210projects.bafeditor.ui.AnimationRunnable;
 import ru.m210projects.bafeditor.ui.Controller;
 

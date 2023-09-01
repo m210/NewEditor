@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import ru.m210projects.bafeditor.UserContext;
 import ru.m210projects.bafeditor.backend.tiles.ArtEntry;
+import ru.m210projects.bafeditor.ui.Controller;
 import ru.m210projects.bafeditor.ui.components.MaterialInputContainer;
 import ru.m210projects.bafeditor.ui.components.RadiusButton;
 
@@ -21,7 +22,7 @@ public class PropertiesPanel extends JPanel {
     private final JTextField tileChecksum; // FIXME: не обновляется
     private final MaterialInputContainer xOffsetContainer;
     private final MaterialInputContainer yOffsetContainer;
-    public PropertiesPanel() {
+    public PropertiesPanel(Controller controller) {
         super(false);
         setBorder(new EmptyBorder(TilePropertiesTree.TOP_PADDING, 0, TilePropertiesTree.BOTTOM_PADDING, 0));
         setLayout(new GridLayoutManager(4, 2));
@@ -35,8 +36,8 @@ public class PropertiesPanel extends JPanel {
         add(new JLabel("Tile checksum:"), new GridConstraints(2, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
         add(tileChecksum = new JTextField("N/A"), new GridConstraints(2, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
 
-        add(xOffsetContainer = new MaterialInputContainer(new JLabel("X"), e -> onXOffsetChanged((int) e.getSource()), (byte) -128, (byte) 127), new GridConstraints(3, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
-        add(yOffsetContainer = new MaterialInputContainer(new JLabel("Y"), e -> onYOffsetChanged((int) e.getSource()), (byte) -128, (byte) 127), new GridConstraints(3, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
+        add(xOffsetContainer = new MaterialInputContainer(new JLabel("X"), controller::onXOffsetChanged, (byte) -128, (byte) 127), new GridConstraints(3, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
+        add(yOffsetContainer = new MaterialInputContainer(new JLabel("Y"), controller::onYOffsetChanged, (byte) -128, (byte) 127), new GridConstraints(3, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
 
         this.tileWidth.setEditable(false);
         this.tileHeight.setEditable(false);
@@ -61,20 +62,6 @@ public class PropertiesPanel extends JPanel {
             xOffsetContainer.setValue(0);
             yOffsetContainer.setValue(0);
         }
-    }
-
-    // FIXME: To controller
-    public void onXOffsetChanged(int value) {
-        UserContext context = UserContext.getInstance();
-        ArtEntry pic = context.getArtEntry(context.getCurrentTile());
-        pic.setOffset((byte) value, pic.getOffsetY());
-    }
-
-    // FIXME: To controller
-    public void onYOffsetChanged(int value) {
-        UserContext context = UserContext.getInstance();
-        ArtEntry pic = context.getArtEntry(context.getCurrentTile());
-        pic.setOffset(pic.getOffsetX(), (byte) value);
     }
 
     @Override
