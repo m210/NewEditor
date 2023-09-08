@@ -8,6 +8,8 @@ import ru.m210projects.bafeditor.ui.components.RadiusButton;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.plaf.PanelUI;
 
 import static com.intellij.uiDesigner.core.GridConstraints.*;
@@ -23,7 +25,7 @@ public class BloodExtrasPanel extends JPanel {
         add(new RadiusButton("ID", null), new GridConstraints(0, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
 
         add(new RadiusButton("None", null), new GridConstraints(1, 0, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
-        add(new AngelChangerPanel(45, null), new GridConstraints(1, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
+        add(new AngelChangerPanel(e -> controller.onViewAngleChanged((int) e.getSource())), new GridConstraints(1, 1, 1, 1, ANCHOR_NORTH, FILL_HORIZONTAL, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null));
 
         this.setOpaque(false);
     }

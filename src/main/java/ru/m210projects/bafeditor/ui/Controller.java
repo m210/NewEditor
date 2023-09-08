@@ -209,4 +209,7 @@ public class Controller {
         view.getTileViewer().repaint();
     }
 
+    public void onViewAngleChanged(int viewAngle) {
+        System.out.println("viewAngle " + viewAngle);
+    }
 }
