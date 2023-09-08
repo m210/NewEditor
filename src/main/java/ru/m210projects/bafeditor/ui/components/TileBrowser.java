@@ -173,6 +173,16 @@ public class TileBrowser extends TileCanvas {
         repaint();
     }
 
+    /**
+     * Sets scroll to tile
+     */
+    public void setSelectedTile(int tile) { // FIXME doesn't scroll to tile (always 0)
+        int maxRows = Math.max(list.size() / getCols(), 1);
+        final Rectangle current = getVisibleRect();
+        current.y = (tile * Math.max(maxRows - getRows() + 1, 0)) / list.size();
+        scrollRectToVisible(current);
+    }
+
     @Override
     public void setPalette(IndexColorModel palette) {
         for (ArtEntry entry : list) {

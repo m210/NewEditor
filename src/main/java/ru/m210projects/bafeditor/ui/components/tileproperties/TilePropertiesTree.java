@@ -71,8 +71,7 @@ public class TilePropertiesTree extends JTree {
     }
 
     public void onTileSelected(int tile) {
-//        viewAngle = 0;
-//        angleLabel.setText("Angle: " + viewAngle);
+        bloodExtrasPanel.onTileSelected(tile);
         propertiesPanel.onTileSelected(tile);
 
         ArtEntry pic = UserContext.getInstance().getArtEntry(tile);

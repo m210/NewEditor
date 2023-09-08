@@ -89,7 +89,8 @@ public class Controller {
         userContext.setCurrentTile(artFile.getFirstTile());
         view.getTilePropertiesTree().onTileSelected(artFile.getFirstTile());
         view.getTileBrowser().update(artFile);
-        view.getTileViewer().repaint();
+        view.getTileBrowser().setSelectedTile(artFile.getFirstTile());
+        view.getTileViewer().setSelectedTile(artFile.getFirstTile());
     }
 
     public void onLoadArt(Entry item) {
@@ -98,7 +99,8 @@ public class Controller {
         userContext.setCurrentTile(artFile.getFirstTile());
         view.getTilePropertiesTree().onTileSelected(artFile.getFirstTile());
         view.getTileBrowser().update(artFile);
-        view.getTileViewer().repaint();
+        view.getTileBrowser().setSelectedTile(artFile.getFirstTile());
+        view.getTileViewer().setSelectedTile(artFile.getFirstTile());
     }
 
     public void onEntryClicked(Entry item) {
@@ -209,7 +211,7 @@ public class Controller {
         view.getTileViewer().repaint();
     }
 
-    public void onViewAngleChanged(int viewAngle) {
-        System.out.println("viewAngle " + viewAngle);
+    public void onViewAngleChanged(ChangeEvent e) {
+        view.getTileViewer().setViewAngle((int) e.getSource());
     }
 }

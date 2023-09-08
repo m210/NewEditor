@@ -5,6 +5,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import ru.m210projects.bafeditor.UserContext;
 import ru.m210projects.bafeditor.backend.tiles.AnimType;
 import ru.m210projects.bafeditor.backend.tiles.ArtEntry;
+import ru.m210projects.bafeditor.backend.tiles.ViewType;
 import ru.m210projects.bafeditor.ui.AnimationRunnable;
 import ru.m210projects.bafeditor.ui.Controller;
 
@@ -33,6 +34,7 @@ public class TileViewer extends JPanel {
     private final AnimationRunnable anim;
     private final Thread anmTh;
     private volatile int animIndex = 0;
+    private int viewAngle = 0;
 
     public TileViewer(Controller controller) {
         super(false);
@@ -224,12 +226,17 @@ public class TileViewer extends JPanel {
         anim.pause();
     }
 
+    public void setViewAngle(int viewAngle) {
+        this.viewAngle = viewAngle;
+        repaint();
+    }
+
     private synchronized void drawViewer(Graphics g) {
         UserContext context = UserContext.getInstance();
 
         startAnimation();
 
-        drawTile(g, context.getArtEntry(selectedTile + animIndex));
+        drawTile(g, context.getArtEntry(selectedTile + animIndex + getViewFrames(context.getCurrentEntry().getViewType())));
 
         if (prevTile) {
             drawContour(g, context.getArtEntry(selectedTile - 1), scale, prevColor);
@@ -242,7 +249,7 @@ public class TileViewer extends JPanel {
         if (!repeatTexture && crossEnabled) {
             drawCross(g);
         }
-        flipX = false; // FIXME
+        flipX = false;
     }
 
     private void drawCross(Graphics src) {
@@ -257,6 +264,27 @@ public class TileViewer extends JPanel {
         src.drawLine(crossX, 0, crossX, getHeight());
     }
 
+    private int getViewFrames(ViewType type) {
+        int nFrames = 0;
+        switch (type) {
+            case VIEW5:
+            case VIEW8:
+                nFrames = viewAngle / 45;
+
+                if (type != ViewType.VIEW5)
+                    break;
+
+                if (nFrames > 4) {
+                    nFrames = 8 - nFrames;
+                    flipX = true;
+                }
+                break;
+            default:
+                break;
+        }
+
+        return nFrames;
+    }
     private void drawTile(Graphics src, ArtEntry pic) {
         if (pic.getSize() == 0) {
             return;
@@ -272,6 +300,9 @@ public class TileViewer extends JPanel {
         } else {
             int x = crossX - (int) ((pic.getOffsetX() + pic.getWidth() / 2) * (flipX ? -scale : scale));
             int y = crossY - (int) ((pic.getOffsetY() + pic.getHeight() / 2) * scale);
+            if (flipX) {
+                x -= pic.getWidth();
+            }
 
             src.drawImage(img, x, y, null);
 

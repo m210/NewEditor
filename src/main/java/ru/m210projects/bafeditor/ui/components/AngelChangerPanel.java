@@ -36,6 +36,14 @@ public class AngelChangerPanel extends JPanel implements DefaultMouseListener {
         }
     }
 
+    public void resetAngle() {
+        for (PointButton button : buttons) {
+            if (button.degrees == 0) {
+                button.mousePressed(null); // select 0 degrees angle
+            }
+        }
+    }
+
     private void rebuildRectanglePoints(double width, double height, int maxPoints) {
         if (width <= 0 || height <= 0 || maxPoints < 4 || maxPoints > 32 || maxPoints % 2 != 0) {
             throw new IllegalArgumentException("Invalid width, height, or number of points");
