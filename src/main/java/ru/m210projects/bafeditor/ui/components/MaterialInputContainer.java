@@ -1,5 +1,6 @@
 package ru.m210projects.bafeditor.ui.components;
 
+import ru.m210projects.bafeditor.UserContext;
 import ru.m210projects.bafeditor.ui.FontUtilities;
 
 import javax.swing.*;
@@ -12,9 +13,6 @@ import java.awt.event.*;
 import static javax.swing.BoxLayout.X_AXIS;
 
 public class MaterialInputContainer extends JPanel {
-
-    private Color focusedBorderColor = new Color(0, 0, 0);
-    private Color idleBorderColor = new Color(214, 214, 214);
 
     private final JTextField editText;
     private int value;
@@ -86,9 +84,9 @@ public class MaterialInputContainer extends JPanel {
 
     protected Color getContainerBorderColor(boolean focused) {
         if (!focused) {
-            return idleBorderColor;
+            return UserContext.getInstance().getColorScheme().getSeparator();
         }
-        return focusedBorderColor;
+        return UserContext.getInstance().getColorScheme().getButtonPressedBackground();
     }
 
     public int getValue() {

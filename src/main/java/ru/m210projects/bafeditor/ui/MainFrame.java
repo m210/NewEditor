@@ -4,6 +4,7 @@ package ru.m210projects.bafeditor.ui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import ru.m210projects.bafeditor.UserContext;
 import ru.m210projects.bafeditor.ui.components.ModernScrollPane;
 import ru.m210projects.bafeditor.ui.components.ShadowUtils;
 
@@ -29,6 +30,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         setContentPane(root);
 
+        UserContext.getInstance().setColorScheme(new DefaultScheme());
         Controller controller = new Controller();
         mainView = new View(controller);
 
@@ -41,7 +43,7 @@ public class MainFrame extends JFrame {
         tileBrowserHolder.add(scrollPane, BorderLayout.CENTER);
         tileViewerHolder.add(mainView.getTileViewer(), new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_BOTH, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
         tilePropTreeHolder.add(mainView.getTilePropertiesTree(), new GridConstraints(0, 0, 1, 1, ANCHOR_NORTH, FILL_BOTH, SIZEPOLICY_FIXED, SIZEPOLICY_FIXED, null, null, null, 0, false));
-        root.setBackground(Color.WHITE);
+        root.setBackground(UserContext.getInstance().getColorScheme().getBackground());
 
         setTitle(APP_NAME);
 //        setIconImage(Toolkit.getDefaultToolkit().getImage(logoURL));
@@ -53,7 +55,6 @@ public class MainFrame extends JFrame {
 
     @Override
     public void dispose() {
-
         super.dispose();
     }
 

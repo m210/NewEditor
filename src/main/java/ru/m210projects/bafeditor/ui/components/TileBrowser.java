@@ -1,6 +1,5 @@
 package ru.m210projects.bafeditor.ui.components;
 
-import com.intellij.uiDesigner.core.GridLayoutManager;
 import ru.m210projects.bafeditor.UserContext;
 import ru.m210projects.bafeditor.backend.tiles.ArtEntry;
 import ru.m210projects.bafeditor.backend.tiles.ArtFile;
@@ -28,9 +27,21 @@ public class TileBrowser extends TileCanvas {
     private final Color tileNumberBackground = Color.WHITE;
     private final Color tileBorder = Color.BLACK;
 
-    private int cellWidth = 128;
-    private int cellHeight = 128;
-    private boolean fillThumbnails = false;
+    /**
+     * Cell tile width
+     */
+    private int cellWidth = 128; // fixme set control to change it
+    /**
+     * Cell tile height
+     */
+    private int cellHeight = 128; // fixme set control to change it
+    /**
+     * Fit tile to cell
+     */
+    private boolean fillThumbnails = false; // fixme set control to change it
+    /**
+     * Tile list that browser shows
+     */
     private List<ArtEntry> list = new ArrayList<>();
 
     private int firstTile = 0;
@@ -96,7 +107,7 @@ public class TileBrowser extends TileCanvas {
     @Override
     public Dimension getPreferredSize() {
         Dimension dimension = super.getPreferredSize();
-        int visibleCols = getCols();
+        int visibleCols = getVisibleCols();
         int rows = list.size() / visibleCols;
         int delta = list.size() % visibleCols;
         dimension.height = (rows + delta) * cellHeight;
@@ -116,7 +127,7 @@ public class TileBrowser extends TileCanvas {
         g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
         g2d.setFont(new Font("Tahoma", Font.PLAIN, 9));
 
-        int tilecols = getCols();
+        int tilecols = getVisibleCols();
         int tilerows = (view.height / cellHeight) + 2;
 
         int startIndex = tilecols * (view.y / cellHeight);
@@ -176,10 +187,11 @@ public class TileBrowser extends TileCanvas {
     /**
      * Sets scroll to tile
      */
-    public void setSelectedTile(int tile) { // FIXME doesn't scroll to tile (always 0)
-        int maxRows = Math.max(list.size() / getCols(), 1);
+    public void setSelectedTile(int tile) {
+        int maxRows = Math.max(list.size() / getVisibleCols(), 1);
+        int scrollValue = (Math.max(tile - firstTile, 0) * maxRows) / list.size();
         final Rectangle current = getVisibleRect();
-        current.y = (tile * Math.max(maxRows - getRows() + 1, 0)) / list.size();
+        current.y = scrollValue * cellHeight;
         scrollRectToVisible(current);
     }
 
@@ -191,18 +203,28 @@ public class TileBrowser extends TileCanvas {
         super.setPalette(palette);
     }
 
-    private int getRows() {
-        return Math.max(getHeight() / cellHeight, 1);
+    private int getVisibleRows() {
+        return Math.max(getVisibleRect().height / cellHeight, 1);
     }
 
-    private int getCols() {
-        return Math.max(getWidth() / cellWidth, 1);
+    private int getVisibleCols() {
+        return Math.max(getVisibleRect().width / cellWidth, 1);
+    }
+
+    @Override
+    public int getWidth() {
+        return Math.max(super.getWidth(), 1);
+    }
+
+    @Override
+    public int getHeight() {
+        return Math.max(super.getHeight(), 1);
     }
 
     private int calcSelectedTile(MouseEvent e) {
         int selectedCol = e.getX() / cellWidth;
         int selectedRow = e.getY() / cellHeight;
-        int cols = getCols();
+        int cols = getVisibleCols();
         if (selectedCol <= cols - 1) {
             return Math.min(selectedCol + cols * selectedRow, list.size() - 1) + firstTile;
         }

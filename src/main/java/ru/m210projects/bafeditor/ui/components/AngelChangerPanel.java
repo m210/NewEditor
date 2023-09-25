@@ -22,7 +22,7 @@ public class AngelChangerPanel extends JPanel implements DefaultMouseListener {
 
     public AngelChangerPanel(ChangeListener changeListener) {
         setOpaque(false);
-        setBorder(new EmptyBorder(60, 80, 60, 80));
+        setBorder(new EmptyBorder(0, 80, 140, 80));
         addMouseListener(this);
         addMouseMotionListener(this);
         int pointCount = 8;

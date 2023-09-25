@@ -5,7 +5,7 @@ import java.util.List;
 
 public class BloodData {
 
-    public final String[] surfNames = {"None", "Stone", "Metal", "Wood", "Flesh", "Water", "Dirt", "Clay", "Snow", "Ice", "Leaves", "Cloth", "Plant", "Goo", "Lava"};
+    public static final String[] SURF_NAMES = {"None", "Stone", "Metal", "Wood", "Flesh", "Water", "Dirt", "Clay", "Snow", "Ice", "Leaves", "Cloth", "Plant", "Goo", "Lava"};
     public List<Integer> surfaces;
     public List<Integer> voxels;
     public File surfFile;
@@ -15,7 +15,7 @@ public class BloodData {
         if (surfaces != null && tile < surfaces.size()) {
             int surfaceType = surfaces.get(tile);
             if (surfaceType != 0) {
-                return surfNames[surfaceType];
+                return SURF_NAMES[surfaceType];
             }
         }
         return "";

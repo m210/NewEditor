@@ -2,6 +2,7 @@ package ru.m210projects.bafeditor;
 
 import ru.m210projects.bafeditor.backend.tiles.ArtEntry;
 import ru.m210projects.bafeditor.backend.tiles.ArtFile;
+import ru.m210projects.bafeditor.ui.ColorScheme;
 import ru.m210projects.bafeditor.ui.models.BloodData;
 
 import static ru.m210projects.bafeditor.backend.tiles.ArtFile.DUMMY_ENTRY;
@@ -11,6 +12,8 @@ public class UserContext {
     private BloodData bloodData;
     private ArtFile artFile;
     private int currentTile = 0;
+
+    private ColorScheme colorScheme;
 
     private UserContext() {
     }
@@ -55,6 +58,14 @@ public class UserContext {
 
     public void setBloodData(BloodData bloodData) {
         this.bloodData = bloodData;
+    }
+
+    public ColorScheme getColorScheme() {
+        return colorScheme;
+    }
+
+    public void setColorScheme(ColorScheme colorScheme) {
+        this.colorScheme = colorScheme;
     }
 
     private static class SingletonHolder {
